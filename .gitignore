@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+*.duckdb
+.httr-oauth
+.DS_Store
+.quarto
