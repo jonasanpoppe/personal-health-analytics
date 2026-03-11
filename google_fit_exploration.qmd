@@ -1,9 +1,10 @@
 ---
-title: "Macrofactor exploration"
+title: "Google fit exploration"
 author: "Jonas Poppe"
 format: html
 editor: source
 ---
+
 
 # Load Libraries
 
@@ -19,7 +20,7 @@ library(here)
 
 # Load data
 ```{r}
-tar_load(c(macrofactor_daily, macrofactor_exercise), 
+tar_load(c(azm_daily, daily),
          store = here("_targets"))
 ```
 
@@ -30,15 +31,15 @@ tar_load(c(macrofactor_daily, macrofactor_exercise),
 #| echo: FALSE
 
 
-macrofactor_daily %>% 
+daily %>% 
   mutate(year = as.factor(year(date))) %>%
-  ggplot(aes(x = calories_kcal, y = weight_kg)) +
+  ggplot(aes(x = weight_kg, y = azm_total)) +
   geom_point(aes(fill = year), shape = 21) +
   geom_smooth() +
   theme_anthropic() +
-  scale_fill_health()+
   stat_cor() +
-  labs(y = "Trend weight (kg)",
-       x= "Calories (kcal)")
+  scale_fill_health()+
+  labs(y = "Active zone minutes (total)",
+       x= "Weight (kg)")
 
 ```
