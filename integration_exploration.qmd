@@ -1,5 +1,5 @@
 ---
-title: "Google fit exploration"
+title: "Integration exploration"
 author: "Jonas Poppe"
 format: html
 editor: source
@@ -68,23 +68,3 @@ ggplot(coverage, aes(x = day_label, y = week, fill = factor(present))) +
 
 ```
 
-
-# Exploration of daily data
-
-
-```{r}
-#| echo: FALSE
-
-
-daily %>% 
-  mutate(year = as.factor(year(date))) %>%
-  ggplot(aes(x = weight_kg, y = azm_total)) +
-  geom_point(aes(fill = year), shape = 21) +
-  geom_smooth() +
-  theme_anthropic() +
-  stat_cor() +
-  scale_fill_health()+
-  labs(y = "Active zone minutes (total)",
-       x= "Weight (kg)")
-
-```

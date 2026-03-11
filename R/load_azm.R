@@ -25,15 +25,13 @@ load_azm <- function(
   }
 
   # 2. Read & bind all files
-  azm_raw <- csv_files |>
-    map(read_csv, show_col_types = FALSE) |>
-```r
+  azm_raw <- csv_files %>%
+    map(read_csv, show_col_types = FALSE) %>%
     list_rbind() %>%
-```
     clean_names()
 
   # 3. Parse datetime, extract date
-  azm_raw <- azm_raw |>
+  azm_raw <- azm_raw %>%
     mutate(
       date_time = as.POSIXct(date_time, format = "%Y-%m-%dT%H:%M"),
       date      = as.Date(date_time)
@@ -41,19 +39,19 @@ load_azm <- function(
 
   # 4. Aggregate to daily grain, pivoted by zone
 
-  azm_daily <- azm_raw |>
+  azm_daily <- azm_raw %>%
     summarise(
       .by           = c(date, heart_zone_id),
       total_minutes = sum(total_minutes)
-    ) |>
+    ) %>%
     pivot_wider(
       names_from   = heart_zone_id,
       values_from  = total_minutes,
       values_fill  = 0,
       names_prefix = "azm_"
-    ) |>
-    clean_names() |>
-    mutate(azm_total = rowSums(pick(starts_with("azm_")))) |>
+    ) %>%
+    clean_names() %>%
+    mutate(azm_total = rowSums(pick(starts_with("azm_")))) %>%
     arrange(date)
 
   # 5. Write to DuckDB
