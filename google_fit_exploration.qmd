@@ -16,11 +16,12 @@ library(targets)
 library(ggpubr)
 library(here)
 
+
 ```
 
 # Load data
 ```{r}
-tar_load(c(azm_daily, daily),
+tar_load(c(azm_daily, daily,steps_daily),
          store = here("_targets"))
 ```
 
@@ -88,3 +89,18 @@ daily %>%
        x= "Weight (kg)")
 
 ```
+
+```{r}
+daily %>% 
+  mutate(year = as.factor(year(date))) %>%
+  ggplot(aes(x = date, y = hrv_rmssd)) +
+  geom_point(aes(fill = year), shape = 21) +
+  geom_smooth() +
+  theme_anthropic() +
+  stat_cor() +
+  scale_fill_health()+
+  labs(y = "hrv (rmssd)",
+       x= "Date")
+
+```
+
