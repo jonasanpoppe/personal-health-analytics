@@ -20,6 +20,7 @@ list(
   tar_target(sleep_score_dir, "data/raw_data/takeout-20260310T172133Z-3-001/Takeout/Fitbit/Health Fitness Data_GoogleData", format = "file"),
   tar_target(stress_score_dir, "data/raw_data/takeout-20260310T172133Z-3-001/Takeout/Fitbit/Stress Score", format = "file"),
   tar_target(garmin_wellness_dir, "data/raw_data/da0779f1-f01f-45e6-865a-e08f44f45e3c_1/DI_CONNECT/DI-Connect-Wellness", format = "file"),
+  tar_target(garmin_api_dir, "data/garmin_api", format = "file"),
   # Future sources:
   # tar_target(strava_file, "data/strava.csv", format = "file"),
 
@@ -83,6 +84,10 @@ list(
     garmin_wellness_daily,
     load_garmin_wellness(dir = garmin_wellness_dir, db_path = "db/health.db")
   ),
+  tar_target(
+    garmin_api_daily,
+    load_garmin_api(dir = garmin_api_dir, db_path = "db/health.db")
+  ),
   # Future loaders:
   # tar_target(strava_raw, load_strava(strava_file)),
 
@@ -115,7 +120,8 @@ list(
       full_join(sleep_score_daily, by = "date") %>%
       full_join(stress_score_daily, by = "date") %>%
       full_join(rhr_daily, by = "date") %>%
-      full_join(garmin_wellness_daily, by = "date")
+      full_join(garmin_wellness_daily, by = "date") %>%
+      full_join(garmin_api_daily, by = "date")
   )
 
 )

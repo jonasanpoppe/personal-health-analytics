@@ -20,7 +20,7 @@ library(here)
 
 # Load data
 ```{r}
-tar_load(c(azm_daily, daily),
+tar_load( daily,
          store = here("_targets"))
 ```
 
@@ -66,5 +66,36 @@ ggplot(coverage, aes(x = day_label, y = week, fill = factor(present))) +
     x = NULL, y = NULL
   )
 
+```
+
+```{r}
+daily %>% 
+  mutate(year = as.factor(year(date))) %>%
+  mutate(rhr = if_else(is.na(rhr.y), rhr.x,rhr.y)) %>%
+  mutate(rhr = if_else(is.na(rhr), resting_heart_rate,rhr)) %>%
+  ggplot(aes(x = date, y = rhr)) +
+  geom_point(aes(fill = year), shape = 21) +
+  geom_smooth() +
+  theme_anthropic() +
+  stat_cor() +
+  scale_fill_health()+
+  labs(y = "Resting heart rate (bpm)",
+       x= "Date (Day)")
+
+```
+
+```{r}
+daily %>% 
+  mutate(year = as.factor(year(date))) %>%
+  mutate(rhr = if_else(is.na(rhr.y), rhr.x,rhr.y)) %>%
+  mutate(rhr = if_else(is.na(rhr), resting_heart_rate,rhr)) %>%
+  ggplot(aes(x = weight_kg, y = rhr)) +
+  geom_point(aes(fill = year), shape = 21) +
+  geom_smooth() +
+  theme_anthropic() +
+  stat_cor() +
+  scale_fill_health()+
+  labs(y = "Resting heart rate (bpm)",
+       x= "Weight (kg)")
 ```
 

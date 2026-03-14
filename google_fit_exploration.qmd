@@ -16,12 +16,15 @@ library(targets)
 library(ggpubr)
 library(here)
 
+# source the theme objects
+source("R/theme_anthropic.R")
+source("R/health_palette.R")
 
 ```
 
 # Load data
 ```{r}
-tar_load(c(azm_daily, daily,steps_daily),
+tar_load(daily,
          store = here("_targets"))
 ```
 
@@ -101,6 +104,21 @@ daily %>%
   scale_fill_health()+
   labs(y = "hrv (rmssd)",
        x= "Date")
+
+```
+
+```{r}
+
+daily %>% 
+  mutate(year = as.factor(year(date))) %>%
+  ggplot(aes(x = weight_kg, y = resting_heart_rate)) +
+  geom_point(aes(fill = year), shape = 21) +
+  geom_smooth() +
+  theme_anthropic() +
+  stat_cor() +
+  scale_fill_health()+
+  labs(y = "Resting heart rate (bpm)",
+       x= "Weight (kg)")
 
 ```
 
