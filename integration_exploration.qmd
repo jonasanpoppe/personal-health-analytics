@@ -71,7 +71,6 @@ ggplot(coverage, aes(x = day_label, y = week, fill = factor(present))) +
 ```{r}
 daily %>% 
   mutate(year = as.factor(year(date))) %>%
-  mutate(rhr = if_else(is.na(rhr.y), rhr.x,rhr.y)) %>%
   mutate(rhr = if_else(is.na(rhr), resting_heart_rate,rhr)) %>%
   ggplot(aes(x = date, y = rhr)) +
   geom_point(aes(fill = year), shape = 21) +
@@ -87,9 +86,9 @@ daily %>%
 ```{r}
 daily %>% 
   mutate(year = as.factor(year(date))) %>%
-  mutate(rhr = if_else(is.na(rhr.y), rhr.x,rhr.y)) %>%
+  mutate(rhr = coalesce(ga_rhr, gw_rhr)) %>%
   mutate(rhr = if_else(is.na(rhr), resting_heart_rate,rhr)) %>%
-  ggplot(aes(x = weight_kg, y = rhr)) +
+  ggplot(aes(x = trend_weight_kg, y = rhr)) +
   geom_point(aes(fill = year), shape = 21) +
   geom_smooth() +
   theme_anthropic() +

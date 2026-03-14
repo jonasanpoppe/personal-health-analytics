@@ -25,14 +25,14 @@ load_garmin_api <- function(
     # Collapse duplicates in case of overlapping fetches — keep non-NA values
     summarise(
       .by = date,
-      rhr                    = first(na.omit(rhr)),
-      hrv                    = first(na.omit(hrv)),
-      hrv_last_night         = first(na.omit(hrv_last_night)),
-      hrv_last_night_avg     = first(na.omit(hrv_last_night_avg)),
-      hrv_last_night_5_min_high = first(na.omit(hrv_last_night_5_min_high)),
-      hrv_baseline_low       = first(na.omit(hrv_baseline_low)),
-      hrv_baseline_high      = first(na.omit(hrv_baseline_high)),
-      hrv_status             = first(na.omit(hrv_status))
+      ga_rhr                       = first(na.omit(rhr)),
+      ga_hrv                       = first(na.omit(hrv)),
+      ga_hrv_last_night            = first(na.omit(hrv_last_night)),
+      ga_hrv_last_night_avg        = first(na.omit(hrv_last_night_avg)),
+      ga_hrv_last_night_5_min_high = first(na.omit(hrv_last_night_5_min_high)),
+      ga_hrv_baseline_low          = first(na.omit(hrv_baseline_low)),
+      ga_hrv_baseline_high         = first(na.omit(hrv_baseline_high)),
+      ga_hrv_status                = first(na.omit(hrv_status))
     ) %>%
     arrange(date)
 

@@ -47,7 +47,14 @@ load_garmin_wellness <- function(
         if (length(val) == 0) NA_character_ else val[1]
       })
     ) %>%
-    select(date, rhr, hrv, hrv_baseline_low, hrv_baseline_high, hrv_status) %>%
+    select(
+      date,
+      gw_rhr            = rhr,
+      gw_hrv            = hrv,
+      gw_hrv_baseline_low  = hrv_baseline_low,
+      gw_hrv_baseline_high = hrv_baseline_high,
+      gw_hrv_status        = hrv_status
+    ) %>%
     arrange(date)
 
   DBI::dbWriteTable(con, "garmin_wellness_daily", daily_data, overwrite = TRUE)
