@@ -6,7 +6,7 @@ tar_source("R/")
 
 # Pipeline options
 tar_option_set(
-  packages = c("readr", "readxl", "duckdb", "dplyr", "tidyr", "purrr", "janitor", "stringr")
+  packages = c("readr", "readxl", "jsonlite", "duckdb", "dplyr", "tidyr", "purrr", "janitor", "stringr")
 )
 
 list(
@@ -19,7 +19,7 @@ list(
   tar_target(readiness_dir, "data/raw_data/takeout-20260310T172133Z-3-001/Takeout/Fitbit/Daily Readiness", format = "file"),
   tar_target(sleep_score_dir, "data/raw_data/takeout-20260310T172133Z-3-001/Takeout/Fitbit/Health Fitness Data_GoogleData", format = "file"),
   tar_target(stress_score_dir, "data/raw_data/takeout-20260310T172133Z-3-001/Takeout/Fitbit/Stress Score", format = "file"),
-  tar_target(garmin_dir, "data/garmin", format = "file"),
+  tar_target(garmin_wellness_dir, "data/raw_data/da0779f1-f01f-45e6-865a-e08f44f45e3c_1/DI_CONNECT/DI-Connect-Wellness", format = "file"),
   # Future sources:
   # tar_target(strava_file, "data/strava.csv", format = "file"),
 
@@ -80,8 +80,8 @@ list(
     load_rhr(dir = physical_activity_dir, db_path = "db/health.db")
   ),
   tar_target(
-    garmin_hrv_daily,
-    load_garmin_hrv(dir = garmin_dir, db_path = "db/health.db")
+    garmin_wellness_daily,
+    load_garmin_wellness(dir = garmin_wellness_dir, db_path = "db/health.db")
   ),
   # Future loaders:
   # tar_target(strava_raw, load_strava(strava_file)),
@@ -115,7 +115,7 @@ list(
       full_join(sleep_score_daily, by = "date") %>%
       full_join(stress_score_daily, by = "date") %>%
       full_join(rhr_daily, by = "date") %>%
-      full_join(garmin_hrv_daily, by = "date")
+      full_join(garmin_wellness_daily, by = "date")
   )
 
 )
